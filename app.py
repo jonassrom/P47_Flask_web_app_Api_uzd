@@ -1,8 +1,10 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, send_from_directory
 from pydantic import BaseModel
+from flask_cors import CORS
 
 
 app = Flask(__name__)
+CORS(app)
 
 
 class Car(BaseModel):
@@ -36,6 +38,11 @@ cars = [
 def get_cars():
     car_models = [Car.model_validate(car).model_dump() for car in cars]
     return jsonify(car_models)
+
+
+@app.route('/')
+def serve_frontend():
+    return send_from_directory('static', 'index.html')
 
 
 if __name__ == '__main__':
