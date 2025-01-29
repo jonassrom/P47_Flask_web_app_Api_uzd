@@ -31,3 +31,12 @@ cars = [
 
 ]
 
+
+@app.route('/api/cars', methods=['GET'])
+def get_cars():
+    car_models = [Car.model_validate(car).model_dump() for car in cars]
+    return jsonify(car_models)
+
+
+if __name__ == '__main__':
+    app.run(port=5000, debug=True)
